@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysReqMapper">
+    
+    <resultMap type="SysReq" id="SysReqResult">
+        <result property="orderId"    column="orderId"    />
+        <result property="partnerOrderId"    column="partnerOrderId"    />
+        <result property="partneMasterOrderId"    column="partneMasterOrderId"    />
+        <result property="partnerCode"    column="partnerCode"    />
+        <result property="cancelTime"    column="cancelTime"    />
+        <result property="reason"    column="reason"    />
+    </resultMap>
+
+    <sql id="selectSysReqVo">
+        select orderId, partnerOrderId, partneMasterOrderId, partnerCode, cancelTime, reason from sys_req
+    </sql>
+
+    <select id="selectSysReqList" parameterType="SysReq" resultMap="SysReqResult">
+        <include refid="selectSysReqVo"/>
+        <where>  
+            <if test="partnerOrderId != null  and partnerOrderId != ''"> and partnerOrderId = #{partnerOrderId}</if>
+            <if test="partneMasterOrderId != null  and partneMasterOrderId != ''"> and partneMasterOrderId = #{partneMasterOrderId}</if>
+            <if test="partnerCode != null  and partnerCode != ''"> and partnerCode = #{partnerCode}</if>
+            <if test="cancelTime != null "> and cancelTime = #{cancelTime}</if>
+            <if test="reason != null  and reason != ''"> and reason = #{reason}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysReqByOrderId" parameterType="String" resultMap="SysReqResult">
+        <include refid="selectSysReqVo"/>
+        where orderId = #{orderId}
+    </select>
+        
+    <insert id="insertSysReq" parameterType="SysReq">
+        insert into sys_req
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">orderId,</if>
+            <if test="partnerOrderId != null and partnerOrderId != ''">partnerOrderId,</if>
+            <if test="partneMasterOrderId != null">partneMasterOrderId,</if>
+            <if test="partnerCode != null and partnerCode != ''">partnerCode,</if>
+            <if test="cancelTime != null">cancelTime,</if>
+            <if test="reason != null">reason,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">#{orderId},</if>
+            <if test="partnerOrderId != null and partnerOrderId != ''">#{partnerOrderId},</if>
+            <if test="partneMasterOrderId != null">#{partneMasterOrderId},</if>
+            <if test="partnerCode != null and partnerCode != ''">#{partnerCode},</if>
+            <if test="cancelTime != null">#{cancelTime},</if>
+            <if test="reason != null">#{reason},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysReq" parameterType="SysReq">
+        update sys_req
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="partnerOrderId != null and partnerOrderId != ''">partnerOrderId = #{partnerOrderId},</if>
+            <if test="partneMasterOrderId != null">partneMasterOrderId = #{partneMasterOrderId},</if>
+            <if test="partnerCode != null and partnerCode != ''">partnerCode = #{partnerCode},</if>
+            <if test="cancelTime != null">cancelTime = #{cancelTime},</if>
+            <if test="reason != null">reason = #{reason},</if>
+        </trim>
+        where orderId = #{orderId}
+    </update>
+
+    <delete id="deleteSysReqByOrderId" parameterType="String">
+        delete from sys_req where orderId = #{orderId}
+    </delete>
+
+    <delete id="deleteSysReqByOrderIds" parameterType="String">
+        delete from sys_req where orderId in 
+        <foreach item="orderId" collection="array" open="(" separator="," close=")">
+            #{orderId}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.label_2Mapper">
+    
+    <resultMap type="label_2" id="label_2Result">
+        <result property="phonenumber"    column="phonenumber"    />
+        <result property="cname"    column="cname"    />
+        <result property="addr"    column="addr"    />
+        <result property="traffic"    column="traffic"    />
+        <result property="costs"    column="costs"    />
+        <result property="inStatus"    column="in_status"    />
+        <result property="tvStatus"    column="tv_status"    />
+        <result property="lno"    column="lno"    />
+    </resultMap>
+
+    <sql id="selectlabel_2Vo">
+        select phonenumber, cname, addr, traffic, costs, in_status, tv_status, lno from label_2
+    </sql>
+
+    <select id="selectlabel_2List" parameterType="label_2" resultMap="label_2Result">
+        <include refid="selectlabel_2Vo"/>
+        <where>  
+            <if test="phonenumber != null "> and phonenumber = #{phonenumber}</if>
+            <if test="cname != null  and cname != ''"> and cname like concat('%', #{cname}, '%')</if>
+            <if test="addr != null  and addr != ''"> and addr = #{addr}</if>
+            <if test="traffic != null "> and traffic = #{traffic}</if>
+            <if test="costs != null "> and costs = #{costs}</if>
+            <if test="inStatus != null  and inStatus != ''"> and in_status = #{inStatus}</if>
+            <if test="tvStatus != null  and tvStatus != ''"> and tv_status = #{tvStatus}</if>
+            <if test="lno != null "> and lno = #{lno}</if>
+        </where>
+    </select>
+    
+    <select id="selectlabel_2ByPhonenumber" parameterType="Long" resultMap="label_2Result">
+        <include refid="selectlabel_2Vo"/>
+        where phonenumber = #{phonenumber}
+    </select>
+        
+    <insert id="insertlabel_2" parameterType="label_2">
+        insert into label_2
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="phonenumber != null">phonenumber,</if>
+            <if test="cname != null">cname,</if>
+            <if test="addr != null">addr,</if>
+            <if test="traffic != null">traffic,</if>
+            <if test="costs != null">costs,</if>
+            <if test="inStatus != null">in_status,</if>
+            <if test="tvStatus != null">tv_status,</if>
+            <if test="lno != null">lno,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="phonenumber != null">#{phonenumber},</if>
+            <if test="cname != null">#{cname},</if>
+            <if test="addr != null">#{addr},</if>
+            <if test="traffic != null">#{traffic},</if>
+            <if test="costs != null">#{costs},</if>
+            <if test="inStatus != null">#{inStatus},</if>
+            <if test="tvStatus != null">#{tvStatus},</if>
+            <if test="lno != null">#{lno},</if>
+         </trim>
+    </insert>
+
+    <update id="updatelabel_2" parameterType="label_2">
+        update label_2
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cname != null">cname = #{cname},</if>
+            <if test="addr != null">addr = #{addr},</if>
+            <if test="traffic != null">traffic = #{traffic},</if>
+            <if test="costs != null">costs = #{costs},</if>
+            <if test="inStatus != null">in_status = #{inStatus},</if>
+            <if test="tvStatus != null">tv_status = #{tvStatus},</if>
+            <if test="lno != null">lno = #{lno},</if>
+        </trim>
+        where phonenumber = #{phonenumber}
+    </update>
+
+    <delete id="deletelabel_2ByPhonenumber" parameterType="Long">
+        delete from label_2 where phonenumber = #{phonenumber}
+    </delete>
+
+    <delete id="deletelabel_2ByPhonenumbers" parameterType="String">
+        delete from label_2 where phonenumber in 
+        <foreach item="phonenumber" collection="array" open="(" separator="," close=")">
+            #{phonenumber}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.WorkerManagementMapper">
+    
+    <resultMap type="WorkerManagement" id="WorkerManagementResult">
+        <result property="wno"    column="wno"    />
+        <result property="wname"    column="wname"    />
+        <result property="gender"    column="gender"    />
+        <result property="addr"    column="addr"    />
+        <result property="email"    column="email"    />
+        <result property="passcode"    column="passcode"    />
+        <result property="ip"    column="ip"    />
+        <result property="statu"    column="statu"    />
+        <result property="rno"    column="rno"    />
+    </resultMap>
+
+    <sql id="selectWorkerManagementVo">
+        select wno, wname, gender, addr, email, passcode, ip, statu, rno from worker_management
+    </sql>
+
+    <select id="selectWorkerManagementList" parameterType="WorkerManagement" resultMap="WorkerManagementResult">
+        <include refid="selectWorkerManagementVo"/>
+        <where>  
+            <if test="wname != null  and wname != ''"> and wname like concat('%', #{wname}, '%')</if>
+            <if test="gender != null  and gender != ''"> and gender = #{gender}</if>
+            <if test="addr != null  and addr != ''"> and addr = #{addr}</if>
+            <if test="email != null  and email != ''"> and email = #{email}</if>
+            <if test="passcode != null  and passcode != ''"> and passcode = #{passcode}</if>
+            <if test="ip != null  and ip != ''"> and ip = #{ip}</if>
+            <if test="statu != null  and statu != ''"> and statu = #{statu}</if>
+            <if test="rno != null "> and rno = #{rno}</if>
+        </where>
+    </select>
+    
+    <select id="selectWorkerManagementByWno" parameterType="Long" resultMap="WorkerManagementResult">
+        <include refid="selectWorkerManagementVo"/>
+        where wno = #{wno}
+    </select>
+        
+    <insert id="insertWorkerManagement" parameterType="WorkerManagement">
+        insert into worker_management
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="wno != null">wno,</if>
+            <if test="wname != null">wname,</if>
+            <if test="gender != null">gender,</if>
+            <if test="addr != null">addr,</if>
+            <if test="email != null">email,</if>
+            <if test="passcode != null">passcode,</if>
+            <if test="ip != null">ip,</if>
+            <if test="statu != null">statu,</if>
+            <if test="rno != null">rno,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="wno != null">#{wno},</if>
+            <if test="wname != null">#{wname},</if>
+            <if test="gender != null">#{gender},</if>
+            <if test="addr != null">#{addr},</if>
+            <if test="email != null">#{email},</if>
+            <if test="passcode != null">#{passcode},</if>
+            <if test="ip != null">#{ip},</if>
+            <if test="statu != null">#{statu},</if>
+            <if test="rno != null">#{rno},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWorkerManagement" parameterType="WorkerManagement">
+        update worker_management
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="wname != null">wname = #{wname},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="addr != null">addr = #{addr},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="passcode != null">passcode = #{passcode},</if>
+            <if test="ip != null">ip = #{ip},</if>
+            <if test="statu != null">statu = #{statu},</if>
+            <if test="rno != null">rno = #{rno},</if>
+        </trim>
+        where wno = #{wno}
+    </update>
+
+    <delete id="deleteWorkerManagementByWno" parameterType="Long">
+        delete from worker_management where wno = #{wno}
+    </delete>
+
+    <delete id="deleteWorkerManagementByWnos" parameterType="String">
+        delete from worker_management where wno in 
+        <foreach item="wno" collection="array" open="(" separator="," close=")">
+            #{wno}
+        </foreach>
+    </delete>
+
+</mapper>

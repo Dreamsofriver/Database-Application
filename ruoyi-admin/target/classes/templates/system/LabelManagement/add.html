@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('Add User classification')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-LabelManagement-add">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">Classification：</label>
+                <div class="col-sm-8">
+                    <input name="lname" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">Fees Condition：</label>
+                <div class="col-sm-8">
+                    <input name="trafficCh" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">Fees Standard：</label>
+                <div class="col-sm-8">
+                    <input name="trafficSt" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">Payback Condition：</label>
+                <div class="col-sm-8">
+                    <input name="costsCh" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">Payback Standard：</label>
+                <div class="col-sm-8">
+                    <input name="costsSt" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">Product 1?：</label>
+                <div class="col-sm-8">
+                    <input name="inStatusCh" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">Product 2?：</label>
+                <div class="col-sm-8">
+                    <input name="tvStatusCh" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">Others：</label>
+                <div class="col-sm-8">
+                    <input name="lothers" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "system/LabelManagement"
+        $("#form-LabelManagement-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-LabelManagement-add').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

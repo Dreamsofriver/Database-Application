@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.DiabetesPredictionMapper">
+    
+    <resultMap type="DiabetesPrediction" id="DiabetesPredictionResult">
+        <result property="gender"    column="gender"    />
+        <result property="age"    column="age"    />
+        <result property="hypertension"    column="hypertension"    />
+        <result property="heartDisease"    column="heart_disease"    />
+        <result property="smokingHistory"    column="smoking_history"    />
+        <result property="bmi"    column="bmi"    />
+        <result property="hba1cLevel"    column="HbA1c_level"    />
+        <result property="bloodGlucoseLevel"    column="blood_glucose_level"    />
+        <result property="diabetes"    column="diabetes"    />
+    </resultMap>
+
+    <sql id="selectDiabetesPredictionVo">
+        select gender, age, hypertension, heart_disease, smoking_history, bmi, HbA1c_level, blood_glucose_level, diabetes from diabetes_prediction
+    </sql>
+
+    <select id="selectDiabetesPredictionList" parameterType="DiabetesPrediction" resultMap="DiabetesPredictionResult">
+        <include refid="selectDiabetesPredictionVo"/>
+        <where>  
+            <if test="gender != null  and gender != ''"> and gender = #{gender}</if>
+            <if test="age != null  and age != ''"> and age = #{age}</if>
+            <if test="hypertension != null  and hypertension != ''"> and hypertension = #{hypertension}</if>
+            <if test="heartDisease != null  and heartDisease != ''"> and heart_disease = #{heartDisease}</if>
+            <if test="smokingHistory != null  and smokingHistory != ''"> and smoking_history = #{smokingHistory}</if>
+            <if test="bmi != null  and bmi != ''"> and bmi = #{bmi}</if>
+            <if test="hba1cLevel != null  and hba1cLevel != ''"> and HbA1c_level = #{hba1cLevel}</if>
+            <if test="bloodGlucoseLevel != null  and bloodGlucoseLevel != ''"> and blood_glucose_level = #{bloodGlucoseLevel}</if>
+            <if test="diabetes != null  and diabetes != ''"> and diabetes = #{diabetes}</if>
+        </where>
+    </select>
+    
+    <select id="selectDiabetesPredictionByGender" parameterType="String" resultMap="DiabetesPredictionResult">
+        <include refid="selectDiabetesPredictionVo"/>
+        where gender = #{gender}
+    </select>
+        
+    <insert id="insertDiabetesPrediction" parameterType="DiabetesPrediction">
+        insert into diabetes_prediction
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="gender != null">gender,</if>
+            <if test="age != null">age,</if>
+            <if test="hypertension != null">hypertension,</if>
+            <if test="heartDisease != null">heart_disease,</if>
+            <if test="smokingHistory != null">smoking_history,</if>
+            <if test="bmi != null">bmi,</if>
+            <if test="hba1cLevel != null">HbA1c_level,</if>
+            <if test="bloodGlucoseLevel != null">blood_glucose_level,</if>
+            <if test="diabetes != null">diabetes,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="gender != null">#{gender},</if>
+            <if test="age != null">#{age},</if>
+            <if test="hypertension != null">#{hypertension},</if>
+            <if test="heartDisease != null">#{heartDisease},</if>
+            <if test="smokingHistory != null">#{smokingHistory},</if>
+            <if test="bmi != null">#{bmi},</if>
+            <if test="hba1cLevel != null">#{hba1cLevel},</if>
+            <if test="bloodGlucoseLevel != null">#{bloodGlucoseLevel},</if>
+            <if test="diabetes != null">#{diabetes},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDiabetesPrediction" parameterType="DiabetesPrediction">
+        update diabetes_prediction
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="age != null">age = #{age},</if>
+            <if test="hypertension != null">hypertension = #{hypertension},</if>
+            <if test="heartDisease != null">heart_disease = #{heartDisease},</if>
+            <if test="smokingHistory != null">smoking_history = #{smokingHistory},</if>
+            <if test="bmi != null">bmi = #{bmi},</if>
+            <if test="hba1cLevel != null">HbA1c_level = #{hba1cLevel},</if>
+            <if test="bloodGlucoseLevel != null">blood_glucose_level = #{bloodGlucoseLevel},</if>
+            <if test="diabetes != null">diabetes = #{diabetes},</if>
+        </trim>
+        where gender = #{gender}
+    </update>
+
+    <delete id="deleteDiabetesPredictionByGender" parameterType="String">
+        delete from diabetes_prediction where gender = #{gender}
+    </delete>
+
+    <delete id="deleteDiabetesPredictionByGenders" parameterType="String">
+        delete from diabetes_prediction where gender in 
+        <foreach item="gender" collection="array" open="(" separator="," close=")">
+            #{gender}
+        </foreach>
+    </delete>
+
+</mapper>

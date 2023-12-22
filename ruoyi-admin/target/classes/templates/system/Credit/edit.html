@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('Edit Credit')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-Credit-edit" th:object="${credit}">
+            <input name="creditno" th:field="*{creditno}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">Urging times：</label>
+                <div class="col-sm-8">
+                    <input name="times" th:field="*{times}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">Score：</label>
+                <div class="col-sm-8">
+                    <input name="credit" th:field="*{credit}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">WNumber：</label>
+                <div class="col-sm-8">
+                    <input name="wno" th:field="*{wno}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">LeaderNumber：</label>
+                <div class="col-sm-8">
+                    <input name="leadersno" th:field="*{leadersno}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">RoleNumber：</label>
+                <div class="col-sm-8">
+                    <input name="rno" th:field="*{rno}" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "system/Credit";
+        $("#form-Credit-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-Credit-edit').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

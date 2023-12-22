@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.CreditMapper">
+    
+    <resultMap type="Credit" id="CreditResult">
+        <result property="creditno"    column="creditno"    />
+        <result property="times"    column="times"    />
+        <result property="credit"    column="credit"    />
+        <result property="wno"    column="wno"    />
+        <result property="leadersno"    column="leadersno"    />
+        <result property="rno"    column="rno"    />
+    </resultMap>
+
+    <sql id="selectCreditVo">
+        select creditno, times, credit, wno, leadersno, rno from credit
+    </sql>
+
+    <select id="selectCreditList" parameterType="Credit" resultMap="CreditResult">
+        <include refid="selectCreditVo"/>
+        <where>  
+            <if test="times != null "> and times = #{times}</if>
+            <if test="credit != null "> and credit = #{credit}</if>
+            <if test="wno != null "> and wno = #{wno}</if>
+            <if test="leadersno != null "> and leadersno = #{leadersno}</if>
+            <if test="rno != null "> and rno = #{rno}</if>
+        </where>
+    </select>
+    
+    <select id="selectCreditByCreditno" parameterType="Long" resultMap="CreditResult">
+        <include refid="selectCreditVo"/>
+        where creditno = #{creditno}
+    </select>
+        
+    <insert id="insertCredit" parameterType="Credit">
+        insert into credit
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="creditno != null">creditno,</if>
+            <if test="times != null">times,</if>
+            <if test="credit != null">credit,</if>
+            <if test="wno != null">wno,</if>
+            <if test="leadersno != null">leadersno,</if>
+            <if test="rno != null">rno,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="creditno != null">#{creditno},</if>
+            <if test="times != null">#{times},</if>
+            <if test="credit != null">#{credit},</if>
+            <if test="wno != null">#{wno},</if>
+            <if test="leadersno != null">#{leadersno},</if>
+            <if test="rno != null">#{rno},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCredit" parameterType="Credit">
+        update credit
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="times != null">times = #{times},</if>
+            <if test="credit != null">credit = #{credit},</if>
+            <if test="wno != null">wno = #{wno},</if>
+            <if test="leadersno != null">leadersno = #{leadersno},</if>
+            <if test="rno != null">rno = #{rno},</if>
+        </trim>
+        where creditno = #{creditno}
+    </update>
+
+    <delete id="deleteCreditByCreditno" parameterType="Long">
+        delete from credit where creditno = #{creditno}
+    </delete>
+
+    <delete id="deleteCreditByCreditnos" parameterType="String">
+        delete from credit where creditno in 
+        <foreach item="creditno" collection="array" open="(" separator="," close=")">
+            #{creditno}
+        </foreach>
+    </delete>
+
+</mapper>

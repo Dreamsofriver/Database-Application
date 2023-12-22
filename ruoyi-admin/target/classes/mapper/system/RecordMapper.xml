@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.RecordMapper">
+    
+    <resultMap type="Record" id="RecordResult">
+        <result property="serviceTime"    column="service_time"    />
+        <result property="wno"    column="wno"    />
+        <result property="phonenumber"    column="phonenumber"    />
+        <result property="statu"    column="statu"    />
+        <result property="content"    column="content"    />
+        <result property="feedback"    column="feedback"    />
+    </resultMap>
+
+    <sql id="selectRecordVo">
+        select service_time, wno, phonenumber, statu, content, feedback from record
+    </sql>
+
+    <select id="selectRecordList" parameterType="Record" resultMap="RecordResult">
+        <include refid="selectRecordVo"/>
+        <where>  
+            <if test="statu != null  and statu != ''"> and statu = #{statu}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="feedback != null  and feedback != ''"> and feedback = #{feedback}</if>
+        </where>
+    </select>
+    
+    <select id="selectRecordByServiceTime" parameterType="String" resultMap="RecordResult">
+        <include refid="selectRecordVo"/>
+        where service_time = #{serviceTime}
+    </select>
+        
+    <insert id="insertRecord" parameterType="Record">
+        insert into record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="serviceTime != null">service_time,</if>
+            <if test="wno != null">wno,</if>
+            <if test="phonenumber != null">phonenumber,</if>
+            <if test="statu != null">statu,</if>
+            <if test="content != null">content,</if>
+            <if test="feedback != null">feedback,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="serviceTime != null">#{serviceTime},</if>
+            <if test="wno != null">#{wno},</if>
+            <if test="phonenumber != null">#{phonenumber},</if>
+            <if test="statu != null">#{statu},</if>
+            <if test="content != null">#{content},</if>
+            <if test="feedback != null">#{feedback},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRecord" parameterType="Record">
+        update record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="wno != null">wno = #{wno},</if>
+            <if test="phonenumber != null">phonenumber = #{phonenumber},</if>
+            <if test="statu != null">statu = #{statu},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="feedback != null">feedback = #{feedback},</if>
+        </trim>
+        where service_time = #{serviceTime}
+    </update>
+
+    <delete id="deleteRecordByServiceTime" parameterType="String">
+        delete from record where service_time = #{serviceTime}
+    </delete>
+
+    <delete id="deleteRecordByServiceTimes" parameterType="String">
+        delete from record where service_time in 
+        <foreach item="serviceTime" collection="array" open="(" separator="," close=")">
+            #{serviceTime}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.LabelManagementMapper">
+    
+    <resultMap type="LabelManagement" id="LabelManagementResult">
+        <result property="lno"    column="lno"    />
+        <result property="lname"    column="lname"    />
+        <result property="trafficCh"    column="traffic_ch"    />
+        <result property="trafficSt"    column="traffic_st"    />
+        <result property="costsCh"    column="costs_ch"    />
+        <result property="costsSt"    column="costs_st"    />
+        <result property="inStatusCh"    column="in_status_ch"    />
+        <result property="tvStatusCh"    column="tv_status_ch"    />
+        <result property="lothers"    column="lothers"    />
+    </resultMap>
+
+    <sql id="selectLabelManagementVo">
+        select lno, lname, traffic_ch, traffic_st, costs_ch, costs_st, in_status_ch, tv_status_ch, lothers from label_management
+    </sql>
+
+    <select id="selectLabelManagementList" parameterType="LabelManagement" resultMap="LabelManagementResult">
+        <include refid="selectLabelManagementVo"/>
+        <where>  
+            <if test="lname != null  and lname != ''"> and lname like concat('%', #{lname}, '%')</if>
+            <if test="trafficCh != null  and trafficCh != ''"> and traffic_ch = #{trafficCh}</if>
+            <if test="trafficSt != null "> and traffic_st = #{trafficSt}</if>
+            <if test="costsCh != null  and costsCh != ''"> and costs_ch = #{costsCh}</if>
+            <if test="costsSt != null "> and costs_st = #{costsSt}</if>
+            <if test="inStatusCh != null  and inStatusCh != ''"> and in_status_ch = #{inStatusCh}</if>
+            <if test="tvStatusCh != null  and tvStatusCh != ''"> and tv_status_ch = #{tvStatusCh}</if>
+            <if test="lothers != null  and lothers != ''"> and lothers = #{lothers}</if>
+        </where>
+    </select>
+    
+    <select id="selectLabelManagementByLno" parameterType="Long" resultMap="LabelManagementResult">
+        <include refid="selectLabelManagementVo"/>
+        where lno = #{lno}
+    </select>
+        
+    <insert id="insertLabelManagement" parameterType="LabelManagement" useGeneratedKeys="true" keyProperty="lno">
+        insert into label_management
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="lname != null">lname,</if>
+            <if test="trafficCh != null">traffic_ch,</if>
+            <if test="trafficSt != null">traffic_st,</if>
+            <if test="costsCh != null">costs_ch,</if>
+            <if test="costsSt != null">costs_st,</if>
+            <if test="inStatusCh != null">in_status_ch,</if>
+            <if test="tvStatusCh != null">tv_status_ch,</if>
+            <if test="lothers != null">lothers,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="lname != null">#{lname},</if>
+            <if test="trafficCh != null">#{trafficCh},</if>
+            <if test="trafficSt != null">#{trafficSt},</if>
+            <if test="costsCh != null">#{costsCh},</if>
+            <if test="costsSt != null">#{costsSt},</if>
+            <if test="inStatusCh != null">#{inStatusCh},</if>
+            <if test="tvStatusCh != null">#{tvStatusCh},</if>
+            <if test="lothers != null">#{lothers},</if>
+         </trim>
+    </insert>
+
+    <update id="updateLabelManagement" parameterType="LabelManagement">
+        update label_management
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="lname != null">lname = #{lname},</if>
+            <if test="trafficCh != null">traffic_ch = #{trafficCh},</if>
+            <if test="trafficSt != null">traffic_st = #{trafficSt},</if>
+            <if test="costsCh != null">costs_ch = #{costsCh},</if>
+            <if test="costsSt != null">costs_st = #{costsSt},</if>
+            <if test="inStatusCh != null">in_status_ch = #{inStatusCh},</if>
+            <if test="tvStatusCh != null">tv_status_ch = #{tvStatusCh},</if>
+            <if test="lothers != null">lothers = #{lothers},</if>
+        </trim>
+        where lno = #{lno}
+    </update>
+
+    <delete id="deleteLabelManagementByLno" parameterType="Long">
+        delete from label_management where lno = #{lno}
+    </delete>
+
+    <delete id="deleteLabelManagementByLnos" parameterType="String">
+        delete from label_management where lno in 
+        <foreach item="lno" collection="array" open="(" separator="," close=")">
+            #{lno}
+        </foreach>
+    </delete>
+
+</mapper>

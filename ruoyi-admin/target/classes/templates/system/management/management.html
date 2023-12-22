@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('标签管理列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>标签名：</label>
+                                <input type="text" name="lname"/>
+                            </li>
+                            <li>
+                                <label>流量条件：</label>
+                                <input type="text" name="trafficCh"/>
+                            </li>
+                            <li>
+                                <label>流量标准：</label>
+                                <input type="text" name="trafficSt"/>
+                            </li>
+                            <li>
+                                <label>话费条件：</label>
+                                <input type="text" name="costsCh"/>
+                            </li>
+                            <li>
+                                <label>话费标准：</label>
+                                <input type="text" name="costsSt"/>
+                            </li>
+                            <li>
+                                <label>宽带条件：</label>
+                                <input type="text" name="inStatusCh"/>
+                            </li>
+                            <li>
+                                <label>电视状态条件：</label>
+                                <input type="text" name="tvStatusCh"/>
+                            </li>
+                            <li>
+                                <label>其它：</label>
+                                <input type="text" name="lothers"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:management:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="system:management:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:management:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:management:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:management:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('system:management:remove')}]];
+        var prefix = ctx + "system/management";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "标签管理",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'lno',
+                    title: '标签号',
+                    visible: false
+                },
+                {
+                    field: 'lname',
+                    title: '标签名'
+                },
+                {
+                    field: 'trafficCh',
+                    title: '流量条件'
+                },
+                {
+                    field: 'trafficSt',
+                    title: '流量标准'
+                },
+                {
+                    field: 'costsCh',
+                    title: '话费条件'
+                },
+                {
+                    field: 'costsSt',
+                    title: '话费标准'
+                },
+                {
+                    field: 'inStatusCh',
+                    title: '宽带条件'
+                },
+                {
+                    field: 'tvStatusCh',
+                    title: '电视状态条件'
+                },
+                {
+                    field: 'lothers',
+                    title: '其它'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.lno + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.lno + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

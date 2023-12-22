@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('Add Credit')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-Credit-add">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">Urge times：</label>
+                <div class="col-sm-8">
+                    <input name="times" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">Credit：</label>
+                <div class="col-sm-8">
+                    <input name="credit" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">Wnumber：</label>
+                <div class="col-sm-8">
+                    <input name="wno" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">LeaderNumber：</label>
+                <div class="col-sm-8">
+                    <input name="leadersno" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">RoleNumber：</label>
+                <div class="col-sm-8">
+                    <input name="rno" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "system/Credit"
+        $("#form-Credit-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-Credit-add').serialize());
+            }
+        }
+    </script>
+</body>
+</html>
